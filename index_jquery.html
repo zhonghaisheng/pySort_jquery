@@ -118,6 +118,7 @@
         <div class="char-tip"></div>
     </div>
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="ChinesePY.js"></script>
     <script type="text/javascript">
     var charList = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
         countrys = [
@@ -362,20 +363,24 @@
 
         var letters = "*ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
 
-        var zh = "阿八差大俄发噶哈I级咔拉马拿哦爬器然萨他UV瓦兮丫咋".split(''); //汉字必须尽可能取最前面的那个音，没有用英文表示
+        // var zh = "阿八差大俄发噶哈I级咔拉马拿哦爬器然萨他UV瓦兮丫咋".split(''); //汉字必须尽可能取最前面的那个音，没有用英文表示
 
         var segs = [];
         var curr;
         each(letters, function(i) {
+            var that = this;
             curr = {
-                letter: this,
+                letter: that,
                 data: []
             };
-            each(arr, function() {
-                if ((!zh[i - 1] || zh[i - 1].localeCompare(this, 'zh') <= 0) && this.localeCompare(zh[i], 'zh') == -1) {
-                    if (zh[i] != 'I' && zh[i] != 'U' && zh[i] != 'V') {
-                        curr.data.push(this);
-                    }
+            each(arr, function(i2) {
+                // if ((!zh[i - 1] || zh[i - 1].localeCompare(this, 'zh') <= 0) && this.localeCompare(zh[i], 'zh') == -1) {
+                //     if (zh[i] != 'I' && zh[i] != 'U' && zh[i] != 'V') {
+                //         curr.data.push(this);
+                //     }
+                // }
+                if(Pinyin.GetHP(arr[i2]).toLocaleUpperCase()[0]==that.toString()){
+                    curr.data.push(arr[i2]);
                 }
             });
             if (curr.data.length) {
@@ -490,11 +495,9 @@
     // scroll监听
     _countryBox.scroll(function(e) {
         e.preventDefault();
-
-            window.clearTimeout(timer);
-            timer = setTimeout(isScrollEnd, 100);
-            t1 = _countryBox.scrollTop();
-        }
+        window.clearTimeout(timer);
+        timer = setTimeout(isScrollEnd, 100);
+        t1 = _countryBox.scrollTop();
     })
 
     function isScrollEnd() {
